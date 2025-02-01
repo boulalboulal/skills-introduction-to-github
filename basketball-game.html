@@ -1,0 +1,104 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Basketball Catch Game</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            text-align: center;  
+            background-color: #f4f4f4;  
+            color: #333;  
+            margin: 0;  
+            padding: 0;  
+        }  
+        #game-area {  
+            position: relative;  
+            width: 400px;  
+            height: 600px;  
+            margin: 0 auto;  
+            background-color: #fff;  
+            border: 2px solid #333;  
+            overflow: hidden;  
+            background-image: url('https://i.imgur.com/6QD7pQz.png'); /* Basketball court background */  
+            background-size: cover;  
+            background-position: center;  
+        }  
+        #basket {  
+            position: absolute;  
+            bottom: 10px;  
+            left: 175px;  
+            width: 50px;  
+            height: 50px;  
+            background-image: url('https://i.imgur.com/5Z4h3uE.png'); /* Basketball hoop */  
+            background-size: cover;  
+            background-position: center;  
+        }  
+        #ball {  
+            position: absolute;  
+            top: 0;  
+            left: 175px;  
+            width: 30px;  
+            height: 30px;  
+            background-image: url('https://i.imgur.com/9mQ3zr3.png'); /* Basketball */  
+            background-size: cover;  
+            background-position: center;  
+            border-radius: 50%;  
+        }  
+        #score {  
+            margin-top: 20px;  
+            font-size: 24px;  
+        }  
+    </style>  
+</head>  
+<body>  
+    <h1>Basketball Catch Game</h1>  
+    <div id="game-area">  
+        <div id="basket"></div>  
+        <div id="ball"></div>  
+    </div>  
+    <div id="score">Score: 0</div>  
+
+    <script>  
+        const basket = document.getElementById('basket');  
+        const ball = document.getElementById('ball');  
+        const scoreDisplay = document.getElementById('score');  
+        let score = 0;  
+        let ballPosition = 0;  
+
+        // Move the basket using arrow keys  
+        document.addEventListener('keydown', (e) => {  
+            const basketLeft = parseInt(window.getComputedStyle(basket).left);  
+            if (e.key === 'ArrowLeft' && basketLeft > 0) {  
+                basket.style.left = (basketLeft - 10) + 'px';  
+            }  
+            if (e.key === 'ArrowRight' && basketLeft < 350) {  
+                basket.style.left = (basketLeft + 10) + 'px';  
+            }  
+        });  
+
+        // Move the ball  
+        function moveBall() {  
+            ballPosition += 5;  
+            ball.style.top = ballPosition + 'px';  
+
+            // Check for collision with the basket  
+            if (ballPosition >= 550) {  
+                const ballLeft = parseInt(window.getComputedStyle(ball).left);  
+                const basketLeft = parseInt(window.getComputedStyle(basket).left);  
+                if (ballLeft >= basketLeft && ballLeft <= basketLeft + 50) {  
+                    score++;  
+                    scoreDisplay.textContent = 'Score: ' + score;  
+                }  
+                ballPosition = 0;  
+                ball.style.left = Math.random() * 370 + 'px';  
+            }  
+
+            requestAnimationFrame(moveBall);  
+        }  
+
+        moveBall();  
+    </script>  
+</body>  
+</html>
